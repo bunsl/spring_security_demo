@@ -1,0 +1,38 @@
+server:
+  #  ssl为https证书
+  ssl:
+    key-alias: ox
+    #    key-alias: ox
+    key-store: classpath:keystore.wang
+    key-store-type: PKCS12
+    key-store-password: 123456789
+spring:
+  profiles:
+    active: dev
+    # 第一次启动放开注释 建表后即可删除
+  #    initialization-mode: always
+  aop:
+    proxy-target-class: true
+mybatis-plus:
+  #  对象名字扫描路径 配置它可以在mapper文件里写实体类时不必写全名
+  type-aliases-package: com.wang.demo.**.entity
+  #  mapper文件映射路径
+  mapper-locations: classpath:/mapper/**/*.xml
+  #  想要不写全名需要实体类继承BaseEntity
+  type-aliases-super-type: com.wang.demo.base.entity.Base
+  configuration:
+    #  驼峰命名
+    map-underscore-to-camel-case: true
+    #  二级缓存开启
+    cache-enabled: true
+xss:
+  # xss过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes:
+  # 匹配链接
+  urlPatterns: /*
+
+
+
+

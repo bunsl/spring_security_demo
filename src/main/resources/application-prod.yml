@@ -1,0 +1,52 @@
+server:
+  port: 8009
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.96.98.214:3306/spring_security_demo?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    #redis连接
+  redis:
+    host: 47.96.98.214
+    port: 6379
+    timeout: 30000
+#  base64加密解密需要账户名密码 此处不能省略
+  security:
+    #  jwt动态配置
+    jwt:
+      header: Authorization
+      prefix: "Bearer "
+      secret: secret
+      expiration: 3600
+      remember: 604800
+      issuer: "https://47.96.98.214"
+      claimsAuthorities: authorities
+  aop:
+    proxy-target-class: true
+mybatis-plus:
+  #  对象名字扫描路径 配置它可以在mapper文件里写实体类时不必写全名
+  type-aliases-package: com.wang.demo.**.entity
+  #  mapper文件映射路径
+  mapper-locations: classpath:/mapper/**/*.xml
+  #  想要不写全名需要实体类继承BaseEntity
+  type-aliases-super-type: com.wang.demo.base.entity.Base
+  configuration:
+    #  sql日志输出
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #  驼峰命名
+    map-underscore-to-camel-case: true
+    #  二级缓存开启
+    cache-enabled: true
+xss:
+  # xss过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes:
+  # 匹配链接
+  urlPatterns: /*
+
+
+
+

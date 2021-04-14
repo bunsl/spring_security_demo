@@ -1,0 +1,34 @@
+server:
+  port: 8008
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_security_demo?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    #redis连接
+    schema: classpath:/db/spring_security_demo.sql
+    # 第一次启动放开注释 建表后即可删除
+#    initialization-mode: always
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 30000
+#  base64加密解密需要账户名密码 此处不能省略
+    #  jwt动态配置
+  security:
+    #  jwt动态配置
+    jwt:
+      header: Authorization
+      prefix: "Bearer "
+      secret: secret
+      expiration: 3600
+      remember: 604800
+      issuer: "https://127.0.0.1"
+      claimsAuthorities: authorities
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
