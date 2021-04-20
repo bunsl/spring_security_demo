@@ -2,6 +2,7 @@ package com.wang.demo.modules.system.user.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wang.demo.base.entity.Base;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,9 +19,6 @@ import java.util.List;
  * @author wangjianhua
  * @date 2021-03-18 14:01
  */
-@Getter
-@Setter
-@ToString
 public class User extends Base {
 
     @NotNull(message = "昵称不能为空")
@@ -46,4 +44,57 @@ public class User extends Base {
      */
     @TableField(exist = false)
     private List<String> roles;
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    @JsonProperty(value = "username")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonProperty(value = "password")
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "nick='" + nick + '\'' +
+                ", name='" + name + '\'' +
+                ", pass='" + pass + '\'' +
+                ", state=" + state +
+                ", roles=" + roles +
+                '}';
+    }
 }

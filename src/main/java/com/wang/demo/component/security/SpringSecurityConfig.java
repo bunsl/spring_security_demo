@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -56,26 +57,33 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * 自定义处理提供器并加载到ioc中
+     * 自定义处理提供器并加载到ioc中 提供器暂不使用 可以注入authenticationManagerBean();
      * @return DaoAuthenticationProvider
      */
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setHideUserNotFoundExceptions(false);
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(bCryptPasswordEncoder());
-        return provider;
-    }
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider(){
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setHideUserNotFoundExceptions(false);
+//        provider.setUserDetailsService(userDetailsService);
+//        provider.setPasswordEncoder(bCryptPasswordEncoder());
+//        return provider;
+//    }
 
     /**
      * 认证管理构造器使用上面的提供器
+     * 提供器暂不使用 这样可以注入authenticationManagerBean();
      * @param authenticationManagerBuilder 认证管理构造器
      * @throws Exception 异常
      */
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.authenticationProvider(authenticationProvider());
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     /**
@@ -100,9 +108,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
          */
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-//        .antMatchers(HttpMethod.POST,"/system/**").permitAll()
-//        .antMatchers(HttpMethod.GET,"/system/**").permitAll()
-//        .antMatchers(HttpMethod.POST,"/system/user").permitAll()
+//        .antMatchers(HttpMethod.POST,"/system/**").permitAll() 登录页面自定义
+        .antMatchers(HttpMethod.POST,"/system/**").anonymous()
 //        .antMatchers("/role/**").permitAll()
 //         Swagger index页面： https://localhost:8888/swagger-ui/index.html
         .antMatchers("/swagger-ui/**").permitAll()
@@ -147,7 +154,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                  * JWTAuthorizationFilter 权限授权过滤器
                  */
         http
-                .addFilter(new JwtAuthenticationFilter(jsonWebToken,authenticationManager(),redisComponent))
+//                .addFilter(new JwtAuthenticationFilter(jsonWebToken,authenticationManager(),redisComponent))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(),jsonWebToken,redisComponent))
         ;
 

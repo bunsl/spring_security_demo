@@ -17,7 +17,8 @@ public enum ResultCode {
     PARAM_IS_BLANK(10002, "参数为空"),
     PARAM_TYPE_BIND_ERROR(10003, "参数类型错误"),
     PARAM_NOT_COMPLETE(10004, "参数缺失"),
-
+    /*  vue登陆成功接口 可以改vue 但没必要  */
+    LOGIN_SUCCESS(20000, "登陆成功"),
     /* 用户错误：20001-29999*/
     USER_NOT_LOGIN(20001, "用户未登录"),
     USER_LOGIN_ERROR(20002, "账号不存在或密码错误"),
@@ -28,6 +29,7 @@ public enum ResultCode {
     USER_LOGOUT_SUCCESS(20007, "退出成功"),
     USER_NOT_EXIST(20008, "用户不存在"),
     USER_HAS_EXISTED(20009, "用户已存在"),
+    USER_PARAM_EMPTY(20010,"用户名或密码为空"),
 
     /* 业务错误：30001-39999 */
     SPECIFIED_QUESTIONED_USER_NOT_EXIST(30001, "某业务出现问题"),
