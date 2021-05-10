@@ -2,20 +2,26 @@ package com.wang.demo.modules.security.controller;
 
 import com.wang.demo.base.response.ResultCode;
 import com.wang.demo.base.response.ResultMessage;
+import com.wang.demo.component.security.jwt.JsonWebToken;
 import com.wang.demo.modules.security.service.TokenService;
 import com.wang.demo.modules.system.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,10 +31,13 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("system")
+@CrossOrigin
 public class LoginController {
 
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private JsonWebToken jsonWebToken;
 
     @PostMapping("login")
     public ResultMessage login(@RequestBody User user){
@@ -68,6 +77,20 @@ public class LoginController {
             }
         }
 
-        return ResultMessage.success(ResultCode.LOGIN_SUCCESS,map);
+        return ResultMessage.success(ResultCode.SUCCESS,map);
+    }
+
+    @GetMapping("info")
+    public ResultMessage getInfo(HttpServletRequest request,HttpServletResponse response){
+//        Authentication authentication = jsonWebToken.getAuthenticationFromToken(request, response);
+//        List<GrantedAuthority> roles = (List<GrantedAuthority>) authentication.getAuthorities();
+//        System.err.println(authentication.toString());
+        Map<String,Object> map = new HashMap<>();
+        map.put("roles","[ROLE_GUEST]");
+        map.put("name","rain");
+        map.put("avatar","https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D450%2C600/sign=a587b23df11f3a295a9dddcaac159007/500fd9f9d72a60590cfef2f92934349b023bba62.jpg");
+        map.put("introduction","测试环节");
+        return ResultMessage.success(map);
+
     }
 }

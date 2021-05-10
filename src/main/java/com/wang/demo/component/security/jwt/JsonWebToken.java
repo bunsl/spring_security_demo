@@ -172,6 +172,7 @@ public class JsonWebToken {
         return authentication;
     }
 
+
     /**
      * 从http请求中获取token
      * @param request 请求
@@ -196,6 +197,7 @@ public class JsonWebToken {
      * @return 认证对象
      */
     public Authentication getAuthentication(){
+        System.err.println(SecurityContextHolder.getContext());
         if(StringUtils.isEmpty(SecurityContextHolder.getContext())){
             return null;
         }

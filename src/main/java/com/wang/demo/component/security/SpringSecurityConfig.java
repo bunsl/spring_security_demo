@@ -110,8 +110,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //        .antMatchers(HttpMethod.POST,"/system/**").permitAll() 登录页面自定义
         .antMatchers(HttpMethod.POST,"/system/**").anonymous()
+        .antMatchers(HttpMethod.GET,"/system/info").anonymous()
 //        .antMatchers("/role/**").permitAll()
-//         Swagger index页面： https://localhost:8888/swagger-ui/index.html
+//         Swagger index页面： https://localhost:8008/swagger-ui/index.html
         .antMatchers("/swagger-ui/**").permitAll()
         .antMatchers("/swagger-resources/**").permitAll()
         .antMatchers("/v2/api-docs").permitAll()
