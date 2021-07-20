@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_GUEST')")
     @ApiOperation(value = "【新增】",notes = "用户新增")
     public void save(@Validated @RequestBody User user){
         userService.saveUser(user);

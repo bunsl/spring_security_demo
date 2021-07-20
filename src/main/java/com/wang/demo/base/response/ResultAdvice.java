@@ -6,12 +6,12 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import java.lang.reflect.AccessibleObject;
-import java.nio.file.AccessDeniedException;
 
 /**
  * @author wangjianhua
@@ -46,6 +46,7 @@ public class  ResultAdvice implements ResponseBodyAdvice<Object> {
      * @param ex 异常
      * @return 返回值
      */
+    @ExceptionHandler(value = Exception.class)
     public ResultMessage serverInternal(Exception ex) {
         //无访问权限时
         if (ex instanceof AccessDeniedException) {

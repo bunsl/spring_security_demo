@@ -108,11 +108,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
          */
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-//        .antMatchers(HttpMethod.POST,"/system/**").permitAll() 登录页面自定义
-        .antMatchers(HttpMethod.POST,"/system/**").anonymous()
-        .antMatchers(HttpMethod.GET,"/system/info").anonymous()
-//        .antMatchers("/role/**").permitAll()
-//         Swagger index页面： https://localhost:8008/swagger-ui/index.html
+        //开放登录接口
+        .antMatchers(HttpMethod.POST,"/system/login").permitAll()
+        //Swagger index页面： https://localhost:8008/swagger-ui/index.html swagger未完善 请使用postman
         .antMatchers("/swagger-ui/**").permitAll()
         .antMatchers("/swagger-resources/**").permitAll()
         .antMatchers("/v2/api-docs").permitAll()
@@ -135,18 +133,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .and()
                 //todo 可以写后台的登录页面
-//                .formLogin()
-//                .loginPage("/system/login")
-//                .and()
                 .logout()
                 //这是后台的登出页面 可以自定义
                 .logoutUrl("/logout")
                 .logoutSuccessHandler((request,response,exception)->{
-                    //todo 未完成   退出并根据用户名删除redis 这里写为删除超级用户 最好是单独写一个处理类
-                    // 可以在页面做好之后在logout接口页面 先在页面或者header中拿到用户信息 拿到username之后 通过下面的方法进行删除
-                    //  JWT.parser方法可以解析token并拿到其中的用户名及其他信息
-//                    redisComponent.del(username);
-                       redisComponent.del("rain");
+                    //登出需要token
+                    Authentication authentication = jsonWebToken.getAuthenticationFromToken(request, response);
+                    String username = authentication.getName();
+                    System.err.println("当前操作人:"+username);
+                    redisComponent.del(username);
                     ResultMessage.response(response,ResultMessage.success(ResultCode.USER_LOGOUT_SUCCESS));
                 });
                 /*

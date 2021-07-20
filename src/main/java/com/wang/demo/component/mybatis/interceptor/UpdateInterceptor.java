@@ -152,14 +152,14 @@ public class UpdateInterceptor implements Interceptor {
     private void upFiled(Field[] fields, MappedStatement ms, Object args) {
         //insert语句 就添加创建时间 创建人 修改时间 修改人
         if (ms.getSqlCommandType() == SqlCommandType.INSERT) {
-            this.setAllParams(fields, args, CREATED_BY, CREATED_BY);
+            this.setAllParams(fields, args, CREATED_BY, jsonWebToken.getAuthentication().getName());
             this.setAllParams(fields, args, CREATED_TIME, new Date());
-            this.setAllParams(fields, args, UPDATED_BY, UPDATED_BY);
+            this.setAllParams(fields, args, UPDATED_BY, jsonWebToken.getAuthentication().getName());
             this.setAllParams(fields, args, UPDATED_TIME, new Date());
         }
         //update 语句 则添加修改时间 修改人
         if (ms.getSqlCommandType() == SqlCommandType.UPDATE) {
-            this.setAllParams(fields, args, UPDATED_BY, UPDATED_BY);
+            this.setAllParams(fields, args, UPDATED_BY, jsonWebToken.getAuthentication().getName());
             this.setAllParams(fields, args, UPDATED_TIME, new Date());
         }
     }
@@ -183,9 +183,11 @@ public class UpdateInterceptor implements Interceptor {
                     }
                     if (valObj instanceof String) {
                         String name = jsonWebToken.getAuthentication().getName();
-                        int id = userService.findIdByUserName(name);
+//                        可以用id做修改人 为展示方便这里使用name
+//                        int id = userService.findIdByUserName(name);
                         fields[i].setAccessible(true);
-                        fields[i].set(obj, id);
+//                        fields[i].set(obj, id);
+                        fields[i].set(obj,name);
                         fields[i].setAccessible(false);
                     }
                 } catch (Exception e) {

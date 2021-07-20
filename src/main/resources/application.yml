@@ -8,7 +8,7 @@ server:
     key-store-password: 123456789
 spring:
   profiles:
-    active: dev
+    active: prod
     # 第一次启动放开注释 建表后即可删除
   #    initialization-mode: always
   aop:

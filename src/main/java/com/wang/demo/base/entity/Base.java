@@ -22,16 +22,16 @@ public class Base implements Serializable {
     private int id;
 
     @TableField(fill = FieldFill.UPDATE)
-    @ApiModelProperty(value = "添加人", dataType = "int")
-    private int createdBy;
+    @ApiModelProperty(value = "添加人", dataType = "String")
+    private String createdBy;
 
     @TableField(fill = FieldFill.UPDATE)
     @ApiModelProperty(value = "添加时间", dataType = "date")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     private Date createdTime;
 
-    @ApiModelProperty(value = "修改人", dataType = "int")
-    private int updatedBy;
+    @ApiModelProperty(value = "修改人", dataType = "String")
+    private String updatedBy;
 
     @ApiModelProperty(value = "修改时间", dataType = "date")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")

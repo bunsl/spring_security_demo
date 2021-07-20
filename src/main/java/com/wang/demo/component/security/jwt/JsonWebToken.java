@@ -197,7 +197,6 @@ public class JsonWebToken {
      * @return 认证对象
      */
     public Authentication getAuthentication(){
-        System.err.println(SecurityContextHolder.getContext());
         if(StringUtils.isEmpty(SecurityContextHolder.getContext())){
             return null;
         }
